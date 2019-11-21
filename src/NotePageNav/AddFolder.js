@@ -5,6 +5,7 @@ import config from '../config';
 //add onSubmit to form
 //add onChange to input field
 export default class AddFolder extends React.Component {
+
   static defaultProps = {
     history: {
       goBack: () => { }
@@ -13,19 +14,6 @@ export default class AddFolder extends React.Component {
       params: {}
     }
   };
-
-  handleAddFolder = e => {
-    //e.preventDefault()
-    newName = {this.state.name};
-    
-    fetch(`${config.API_ENDPOINT}/folders/`, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newName)
-    }).then(function (response) {
-      return response.json();
-    })
-  }
 
   constructor(props) {
     super(props);
@@ -33,14 +21,22 @@ export default class AddFolder extends React.Component {
       name: { value: "", touched: false }
     };
   }
-  static defaultProps = {
-    history: {
-      goBack: () => { }
-    },
-    match: {
-      params: {}
-    }
-  };
+
+  handleAddFolder = e => {
+    //e.preventDefault()
+    const {id, name} = this.state;
+    const folder = {id, name};
+    fetch(`${config.API_ENDPOINT}/folders/`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(folder)
+    }).then(function (response) {
+      return response.json();
+    })
+  }
+
+
+
   validateName() {
     const name = this.state.name.value.trim();
     if (name.length === 0) {
