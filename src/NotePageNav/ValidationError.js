@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React from "react";
 
-export default function ValidationError(props) {
-
+function ValidationError(props) {
   if (props.message) {
-    return <div>{props.message}</div>
+    return <h3>{props.message}</h3>;
   }
-  return <div> </div>
-
+  return <div></div>;
 }
 
 export default ValidationError;
