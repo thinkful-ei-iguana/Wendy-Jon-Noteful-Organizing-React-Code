@@ -1,9 +1,32 @@
 import React from "react";
 import ValidationError from "./ValidationError";
+import config from '../config';
 
 //add onSubmit to form
 //add onChange to input field
 export default class AddFolder extends React.Component {
+  static defaultProps = {
+    history: {
+      goBack: () => { }
+    },
+    match: {
+      params: {}
+    }
+  };
+
+  handleAddFolder = e => {
+    //e.preventDefault()
+    newName = {this.state.name};
+    
+    fetch(`${config.API_ENDPOINT}/folders/`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newName)
+    }).then(function (response) {
+      return response.json();
+    })
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +35,7 @@ export default class AddFolder extends React.Component {
   }
   static defaultProps = {
     history: {
-      goBack: () => {}
+      goBack: () => { }
     },
     match: {
       params: {}
@@ -40,8 +63,10 @@ export default class AddFolder extends React.Component {
     event.preventDefault();
     const { name } = this.state;
     document.getElementById("Add").reset();
+    this.handleAddFolder(name);
     console.log(name);
   }
+
   render() {
     const nameError = this.validateName();
     return (
