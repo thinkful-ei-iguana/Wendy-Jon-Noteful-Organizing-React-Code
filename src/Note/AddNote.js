@@ -1,5 +1,5 @@
 import React from "react";
-import ValidationError from "./ValidationError";
+import ValidationError from "../NotePageNav/ValidationError";
 import config from '../config';
 
 //add onSubmit to form
@@ -25,15 +25,15 @@ export default class AddFolder extends React.Component {
     };
   }
 
-  handleAddFolder(name) {
-    const folder = { name };
+  handleAddNote(name) {
+    const note = { name };
     const options = {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(folder)
+      body: JSON.stringify(note)
     };
 
-    fetch(`${config.API_ENDPOINT}/folders/`, options)
+    fetch(`${config.API_ENDPOINT}/notes/`, options)
     .then(function (response) {
       return response.json();
     })
@@ -71,7 +71,7 @@ export default class AddFolder extends React.Component {
   } else {
     const { name } = this.state;
     document.getElementById("Add").reset();
-    this.handleAddFolder(name);
+    this.handleAddNote(name);
     console.log(name);
   }
 }
@@ -80,15 +80,15 @@ export default class AddFolder extends React.Component {
    
     return (
       <form
-        className="Add-folder"
+        className="Add-note"
         id="Add"
         onSubmit={e => this.handleSubmit(e)}
       >
-        <label htmlFor="Folder-label">Add Folder Name</label>
+        <label htmlFor="Note-label">Add Note Name</label>
         <input
           type="Text"
-          className="Folder-input"
-          id="Folder-label"
+          className="Note-input"
+          id="Note-label"
           onChange={e => this.updateName(e.target)}
         ></input>
         {this.state.name && 
@@ -99,7 +99,7 @@ export default class AddFolder extends React.Component {
           disabled= {this.state.nameError}
           onClick={() => this.props.history.goBack()}
         >
-          Add Folder
+          Add Note
         </button>
       </form>
     );
