@@ -1,0 +1,10 @@
+button {
+  width: 100px;
+  padding: 10px;
+}
+
+.folder-name {
+  width: 200px;
+  padding: 10px;
+  margin-left: 20px;
+}

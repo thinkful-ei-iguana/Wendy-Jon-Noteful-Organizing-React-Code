@@ -1,0 +1,21 @@
+.note {
+  border: solid 1px gray;
+  width: 600px;
+  padding: 10px;
+}
+
+.delete-button {
+  float: right;
+  padding: 6px;
+  margin-right: 10px;
+}
+
+.add-note {
+  margin-left: 10px;
+  padding: 10px;
+  width: 200px;
+}
+
+.note-list {
+  list-style-type: none;
+}

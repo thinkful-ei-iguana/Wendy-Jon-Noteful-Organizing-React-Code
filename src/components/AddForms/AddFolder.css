@@ -1,0 +1,16 @@
+.add-folder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 300px;
+  padding: 20px;
+}
+
+label {
+  padding: 10px;
+}
+
+button {
+  display: inline;
+  margin: 10px 10px;
+}

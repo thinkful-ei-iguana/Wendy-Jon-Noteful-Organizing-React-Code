@@ -1,0 +1,37 @@
+.folder-name {
+  list-style-type: none;
+  display: block;
+  padding: 15px;
+  width: 8vw;
+  text-align: center;
+  margin: 3px 3px;
+  color: darkslategray;
+  font-weight: 700;
+  background-color: beige;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.add-folder {
+  list-style-type: none;
+  display: block;
+  padding: 15px;
+  width: 9vw;
+  text-align: center;
+  margin-left: 45px;
+  font-weight: 700;
+}
+
+.active {
+  list-style-type: none;
+  display: block;
+  padding: 15px;
+  width: 8vw;
+  text-align: center;
+  color: beige;
+  font-weight: 700;
+  background-color: #282c34;
+}
