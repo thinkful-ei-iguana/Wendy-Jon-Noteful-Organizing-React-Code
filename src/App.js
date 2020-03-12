@@ -52,12 +52,6 @@ class App extends Component {
 
   handleEditFolder = editedFolder => {
     const newFolders = this.state.folders.map(folder => {
-      console.log(
-        folder,
-        "folder in shared state",
-        editedFolder,
-        "editedFolder"
-      );
       return folder.id === Number(editedFolder.id) ? editedFolder : folder;
     });
 
@@ -79,11 +73,10 @@ class App extends Component {
   };
 
   handleEditNote = editedNote => {
-    console.log("edited Note", editedNote);
     const newNotes = this.state.notes.map(note =>
       Number(note.id) === Number(editedNote.id) ? editedNote : note
     );
-    console.log("newnotes", newNotes);
+
     this.setState({
       notes: newNotes
     });

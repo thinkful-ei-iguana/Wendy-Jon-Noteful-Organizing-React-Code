@@ -62,7 +62,6 @@ class EditNote extends Component {
         return res.json();
       })
       .then(noteRes => {
-        console.log("noteRes", noteRes);
         this.context.editNote(noteRes);
         this.props.history.push(`/`);
       })
