@@ -3,3 +3,11 @@
   width: 600px;
   padding: 10px;
 }
+
+.note-container {
+  display: flex;
+  flex-direction: row;
+  width: 60px;
+  margin-left: 540px;
+  justify-content: space-between;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ValidationError from "./ValidationError";
 import APIContext from "./../APIContext";
+import config from "../../config";
 import "./AddFolder.css";
 
 class AddFolder extends Component {
@@ -23,6 +24,25 @@ class AddFolder extends Component {
 
   static contextType = APIContext;
 
+  // componentDidMount() {
+  //   fetch(`${config.API_ENDPOINT}/folders`, {
+  //     method: "GET"
+  //   })
+  //     .then(res => {
+  //       if (!res.ok) return res.json().then(event => Promise.reject(event));
+  //       return res.json();
+  //     })
+  //     .then(resFolder => {
+  //       this.setState({
+  //         folder: resFolder
+  //       });
+  //     })
+
+  //     .catch(error => {
+  //       console.error({ error });
+  //     });
+  // }
+
   handleSubmit = event => {
     event.preventDefault();
 
@@ -33,7 +53,7 @@ class AddFolder extends Component {
       body: JSON.stringify(folder)
     };
 
-    fetch(`http://localhost:9090/folders/`, options)
+    fetch(`${config.API_ENDPOINT}/folders`, options)
       .then(res => {
         if (!res.ok) return res.json().then(event => Promise.reject(event));
         return res.json();
@@ -57,7 +77,6 @@ class AddFolder extends Component {
   };
 
   render() {
-    console.log("state in addfolder", this.state);
     return (
       <form className="add-folder" id="Add" onSubmit={this.handleSubmit}>
         <h2>Add a folder</h2>
@@ -81,7 +100,7 @@ class AddFolder extends Component {
         <div className="add-folder__button__group">
           <button
             type="submit"
-            className="add-folder__button"
+            className="add-folder-btn"
             disabled={this.validateName()}
           >
             Add Folder

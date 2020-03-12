@@ -1,10 +1,19 @@
-button {
-  width: 100px;
-  padding: 10px;
-}
-
 .folder-name {
   width: 200px;
   padding: 10px;
   margin-left: 20px;
+}
+.go-back-btn {
+  width: 160px;
+  font-size: 16px;
+  cursor: pointer;
+  letter-spacing: 3px;
+  font-weight: 700;
+  background-color: #282c34;
+  border: 2px solid beige;
+  color: beige;
+  padding: 10px;
+}
+.NavBar__feature {
+  margin-left: 100px;
 }

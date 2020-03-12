@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import APIContext from "./../APIContext";
 import PropTypes from "prop-types";
+import config from "../../config";
 import "./Notes.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default class Notes extends Component {
   static defaultProps = {
@@ -14,13 +17,12 @@ export default class Notes extends Component {
   handleClickDelete = event => {
     event.preventDefault();
     const noteId = this.props.id;
-    fetch(`http://localhost:9090/notes/${noteId}`, {
+    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
       method: "DELETE",
       headers: { "content-type": "application/json" }
     })
       .then(res => {
         if (!res.ok) return res.json().then(event => Promise.reject(event));
-        return res.json();
       })
       .then(() => {
         this.context.deleteNote(noteId);
@@ -32,28 +34,36 @@ export default class Notes extends Component {
   };
 
   render() {
-    const { name, id, modified } = this.props;
+    const { name, id, modified, content } = this.props;
+
     return (
       <div className="note">
-        <h2>
-          <Link to={`/note/${id}`}>{name}</Link>
-        </h2>
+        <Link to={`/note/${id}`}>
+          <div>
+            <h2>{name}</h2>
+            <p className="note-content">{content}</p>
+          </div>
+        </Link>
         <p>
           Note modified on{" "}
           <Moment format="D MMM YYYY" withTitle>
             {modified}
           </Moment>
-          <button className="delete-button" onClick={this.handleClickDelete}>
-            Delete Note
-          </button>
         </p>
+        <div className="note-container">
+          <Link to={`/note/edit/${id}`}>
+            <FontAwesomeIcon icon={faPencilAlt} />
+          </Link>
+          <FontAwesomeIcon icon={faTrash} onClick={this.handleClickDelete} />
+        </div>
       </div>
     );
   }
 }
 
 Notes.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.number,
   modified: PropTypes.string,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string,
+  content: PropTypes.string.isRequired
 };

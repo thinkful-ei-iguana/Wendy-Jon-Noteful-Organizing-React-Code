@@ -1,37 +1,39 @@
 .folder-name {
   list-style-type: none;
-  display: block;
-  padding: 15px;
-  width: 8vw;
+  display: flex;
+  justify-content: space-between;
+  width: 10vw;
   text-align: center;
   margin: 3px 3px;
-  color: darkslategray;
   font-weight: 700;
   background-color: beige;
 }
-
+.icon-container {
+  display: flex;
+  justify-content: space-between;
+  width: 2vw;
+}
 a {
   text-decoration: none;
-  color: black;
-}
-
-.add-folder {
-  list-style-type: none;
-  display: block;
-  padding: 15px;
-  width: 9vw;
-  text-align: center;
-  margin-left: 45px;
-  font-weight: 700;
+  color: #282c34;
 }
 
 .active {
-  list-style-type: none;
-  display: block;
-  padding: 15px;
-  width: 8vw;
-  text-align: center;
   color: beige;
+  background-color: #282c34;
+  padding: 0 10px;
+}
+
+.add-folder-btn {
+  margin-left: auto;
+  margin-right: auto;
+  width: 160px;
+  font-size: 16px;
+  cursor: pointer;
+  letter-spacing: 3px;
   font-weight: 700;
   background-color: #282c34;
+  border: 2px solid beige;
+  color: beige;
+  padding: 10px;
 }

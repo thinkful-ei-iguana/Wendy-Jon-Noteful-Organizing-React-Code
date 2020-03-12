@@ -1,24 +1,13 @@
 import React, { Component } from "react";
-import ValidationError from "./ValidationError";
+import ValidationError from "../AddForms/ValidationError";
 import config from "../../config";
 import APIContext from "./../APIContext";
-import "./AddNote.css";
-class AddNote extends Component {
+
+class EditNote extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: {
-        value: "",
-        touched: false
-      },
-      content: {
-        value: "",
-        touched: false
-      },
-      folderId: {
-        value: "",
-        touched: false
-      }
+      note: {}
     };
   }
   static defaultProps = {
@@ -26,31 +15,55 @@ class AddNote extends Component {
       push: () => {}
     },
 
-    addNote: () => {}
+    editNote: () => {}
   };
 
   static contextType = APIContext;
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const newNote = {
-      name: event.target.name.value,
-      content: event.target.content.value,
-      folderid: event.target.folderId.value
-    };
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(newNote)
-    };
-
-    fetch(`${config.API_ENDPOINT}/notes`, options)
+  componentDidMount() {
+    const { noteId } = this.props.match.params;
+    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
+      method: "GET"
+    })
       .then(res => {
         if (!res.ok) return res.json().then(event => Promise.reject(event));
         return res.json();
       })
-      .then(note => {
-        this.context.addNote(note);
+      .then(resNote => {
+        this.setState({
+          note: resNote
+        });
+      })
+
+      .catch(error => {
+        console.error({ error });
+      });
+  }
+
+  handleEdit = event => {
+    event.preventDefault();
+    const editedNote = {
+      id: this.props.match.params.noteId,
+      name: event.target.name.value,
+      content: event.target.content.value,
+      folderid: event.target.folderid.value
+    };
+
+    const options = {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(editedNote)
+    };
+    const { noteId } = this.props.match.params;
+
+    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, options)
+      .then(res => {
+        if (!res.ok) return res.json().then(event => Promise.reject(event));
+        return res.json();
+      })
+      .then(noteRes => {
+        console.log("noteRes", noteRes);
+        this.context.editNote(noteRes);
         this.props.history.push(`/`);
       })
 
@@ -59,22 +72,22 @@ class AddNote extends Component {
       });
   };
   validateNote = name => {
-    if (!this.state.name.value) {
+    if (this.state.note.name === "") {
       return "Name must not be empty";
-    } else if (this.state.name.value.length > 1) {
-      return "Must also specify a folder";
     }
   };
-  validateFolder = folderId => {
-    if (!this.state.folderId.value) {
+  validateFolder = folderid => {
+    if (this.state.note.folderid === "...") {
       return "Must identify a folder";
     }
   };
   render() {
     const { folders = [] } = this.context;
+    const { note } = this.state;
+
     return (
-      <form className="add-note" id="note-form" onSubmit={this.handleSubmit}>
-        <h2>Add a note</h2>
+      <form className="add-note" id="note-form" onSubmit={this.handleEdit}>
+        <h2>Edit note</h2>
 
         <div className="note-form">
           <label htmlFor="note-name">Name</label>
@@ -83,11 +96,14 @@ class AddNote extends Component {
             className="folder__control"
             name="name"
             id="note-name"
+            value={note.name}
             onChange={e =>
-              this.setState({ name: { value: e.target.value, touched: true } })
+              this.setState({
+                note: { name: e.target.value }
+              })
             }
           />
-          {this.state.name.touched && (
+          {this.state.note.name === "" && (
             <ValidationError message={this.validateNote()} />
           )}
           <label htmlFor="note-content">Content</label>
@@ -95,14 +111,21 @@ class AddNote extends Component {
             className="folder__control-text"
             name="content"
             id="note-content"
+            value={note.content}
+            onChange={e =>
+              this.setState({
+                note: { content: e.target.value }
+              })
+            }
           />
           <label htmlFor="note-folder-select">Folder</label>
           <select
             id="note-folder-select"
-            name="folderId"
+            name="folderid"
+            value={note.folderid}
             onChange={e =>
               this.setState({
-                folderId: { value: e.target.value, touched: true }
+                note: { folderid: e.target.value }
               })
             }
           >
@@ -113,7 +136,7 @@ class AddNote extends Component {
               </option>
             ))}
           </select>
-          {this.state.folderId.touched && (
+          {this.state.note.folderid === "..." && (
             <ValidationError message={this.validateFolder()} />
           )}
         </div>
@@ -124,7 +147,7 @@ class AddNote extends Component {
             className="add-note__button"
             disabled={this.validateNote() && this.validateFolder()}
           >
-            Add note
+            Edit note
           </button>
         </div>
       </form>
@@ -132,4 +155,4 @@ class AddNote extends Component {
   }
 }
 
-export default AddNote;
+export default EditNote;

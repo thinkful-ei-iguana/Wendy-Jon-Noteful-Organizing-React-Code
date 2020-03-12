@@ -4,8 +4,11 @@ const APIContext = React.createContext({
   folders: [],
   notes: [],
   addFolder: () => {},
+  deleteFolder: () => {},
+  editFolder: () => {},
   addNote: () => {},
-  deleteNote: () => {}
+  deleteNote: () => {},
+  editNote: () => {}
 });
 
 export default APIContext;

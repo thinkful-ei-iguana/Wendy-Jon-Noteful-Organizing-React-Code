@@ -10,7 +10,16 @@ label {
   padding: 10px;
 }
 
-button {
-  display: inline;
-  margin: 10px 10px;
+.add-folder__button__group {
+  display: flex;
+  margin: 10px 0;
+}
+
+.form-folder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.folder__control {
+  padding: 10px;
 }

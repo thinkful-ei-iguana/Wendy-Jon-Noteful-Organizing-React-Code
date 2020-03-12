@@ -5,10 +5,12 @@ import NavBarNote from "./components/NavBar/NavBarNote";
 import FolderPageContent from "./components/PageContent/FolderPageContent";
 import NotePageContent from "./components/PageContent/NotePageContent";
 import AddFolder from "./components/AddForms/AddFolder";
+import EditFolder from "./components/EditForms/EditFolder";
 import AddNote from "./components/AddForms/AddNote";
+import EditNote from "./components/EditForms/EditNote";
 import FormError from "./components/AddForms/FormError";
 import APIContext from "./components/APIContext";
-
+import config from "./config";
 import "./App.css";
 
 class App extends Component {
@@ -19,8 +21,8 @@ class App extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch("http://localhost:9090/notes"),
-      fetch("http://localhost:9090/folders")
+      fetch(`${config.API_ENDPOINT}/notes`),
+      fetch(`${config.API_ENDPOINT}/folders`)
     ])
       .then(([notesRes, foldersRes]) => {
         if (!notesRes.ok) return notesRes.json().then(e => Promise.reject(e));
@@ -42,6 +44,28 @@ class App extends Component {
     });
   };
 
+  handleDeleteFolder = folderId => {
+    this.setState({
+      folders: this.state.folders.filter(folder => folder.id !== folderId)
+    });
+  };
+
+  handleEditFolder = editedFolder => {
+    const newFolders = this.state.folders.map(folder => {
+      console.log(
+        folder,
+        "folder in shared state",
+        editedFolder,
+        "editedFolder"
+      );
+      return folder.id === Number(editedFolder.id) ? editedFolder : folder;
+    });
+
+    this.setState({
+      folders: newFolders
+    });
+  };
+
   handleAddNote = note => {
     this.setState({
       notes: [...this.state.notes, note]
@@ -54,14 +78,30 @@ class App extends Component {
     });
   };
 
+  handleEditNote = editedNote => {
+    console.log("edited Note", editedNote);
+    const newNotes = this.state.notes.map(note =>
+      Number(note.id) === Number(editedNote.id) ? editedNote : note
+    );
+    console.log("newnotes", newNotes);
+    this.setState({
+      notes: newNotes
+    });
+  };
+
   renderMenuItems() {
     return (
       <>
-        {["/", "/folder/:folderId"].map(path => (
-          <Route exact key={path} path={path} component={NavBarFolders} />
+        {["/", "/folder", "/folder/:folderId"].map(path => (
+          <Route key={path} exact path={path} component={NavBarFolders} />
         ))}
-        <Route path="/note/:noteId" component={NavBarNote} />
-        <Route path="/add-folder" component={NavBarNote} />
+        {["/add-folder", "/folder/:folderId/edit", "/note/edit/:noteId"].map(
+          path => (
+            <Route key={path} path={path} component={NavBarNote} />
+          )
+        )}
+        <Route exact path="/note/:noteId" component={NavBarNote} />
+
         <Route path="/add-note" component={NavBarNote} />
       </>
     );
@@ -69,10 +109,12 @@ class App extends Component {
   renderPageContent() {
     return (
       <main>
-        {["/", "/folder/:folderId"].map(path => (
+        {["/", "/folder", "/folder/:folderId"].map(path => (
           <Route exact path={path} key={path} component={FolderPageContent} />
         ))}
-        <Route path="/note/:noteId" component={NotePageContent} />
+        <Route path="/folder/:folderId/edit" component={EditFolder} />
+        <Route exact path="/note/:noteId" component={NotePageContent} />
+        <Route path="/note/edit/:noteId" component={EditNote} />
         <Route path="/add-folder" component={AddFolder} />
         <Route path="/add-note" component={AddNote} />
       </main>
@@ -84,8 +126,11 @@ class App extends Component {
       folders: this.state.folders,
       notes: this.state.notes,
       addFolder: this.handleAddFolder,
+      deleteFolder: this.handleDeleteFolder,
+      editFolder: this.handleEditFolder,
       addNote: this.handleAddNote,
-      deleteNote: this.handleDeleteNote
+      deleteNote: this.handleDeleteNote,
+      editNote: this.handleEditNote
     };
     return (
       <APIContext.Provider value={value}>

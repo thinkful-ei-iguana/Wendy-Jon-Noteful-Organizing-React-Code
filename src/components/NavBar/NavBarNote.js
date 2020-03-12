@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import APIContext from "./../APIContext";
 import { findFolder, findNote } from "./../notes-helpers";
 import "./NavBarNote.css";
@@ -21,13 +21,18 @@ export default class NavBarNote extends Component {
     const note = findNote(notes, noteId) || {};
     const folder = findFolder(folders, note.folderId);
     return (
-      <>
+      <div className="NavBar__feature">
         <NavLink to="/folder/:folderId">
           {folder && <p className="folder-name">{folder.name}</p>}
         </NavLink>
 
-        <button onClick={() => this.props.history.goBack()}>Go Back</button>
-      </>
+        <button
+          className="go-back-btn"
+          onClick={() => this.props.history.goBack()}
+        >
+          Go Back
+        </button>
+      </div>
     );
   }
 }

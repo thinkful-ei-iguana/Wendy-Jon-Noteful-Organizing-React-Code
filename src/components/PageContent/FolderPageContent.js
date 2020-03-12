@@ -19,12 +19,18 @@ export default class FolderPageContent extends Component {
           <ul>
             {notesForFolder.map(note => (
               <li key={note.id} className="note-list">
-                <Notes id={note.id} name={note.name} modified={note.modified} />
+                <Notes
+                  id={note.id}
+                  name={note.name}
+                  modified={note.modified}
+                  content={note.content}
+                  folderid={note.folderid}
+                />
               </li>
             ))}
           </ul>
           <Link to={"/add-note"}>
-            <button className="add-note">Add note</button>
+            <button className="add-note-btn">Add note</button>
           </Link>
         </section>
       </FormError>

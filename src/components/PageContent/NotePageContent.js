@@ -20,7 +20,7 @@ export default class NotePageContent extends Component {
     const { notes = [] } = this.context;
     const { noteId } = this.props.match.params;
     const note = findNote(notes, noteId) || { content: "" };
-    console.log("props in notepagecontent", this.props);
+
     return (
       <>
         <div>
@@ -28,10 +28,10 @@ export default class NotePageContent extends Component {
             id={note.id}
             name={note.name}
             modified={note.modified}
+            content={note.content}
             onDeleteNote={this.handleDeleteNote}
           />
         </div>
-        <p className="content">{note.content}</p>
       </>
     );
   }

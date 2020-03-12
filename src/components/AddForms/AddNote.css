@@ -1,11 +1,17 @@
-.note {
-  border: solid 1px gray;
-  width: 600px;
+.note-form {
+  display: flex;
+  flex-direction: column;
+}
+.folder__control-text {
+  padding: 10px;
+  height: 200px;
+  width: 300px;
+}
+#note-folder-select {
   padding: 10px;
 }
-
-.add-note-btn {
-  float: right;
+.add-note__button {
+  margin: 10px auto 10px;
   width: 160px;
   font-size: 16px;
   cursor: pointer;
@@ -15,8 +21,4 @@
   border: 2px solid beige;
   color: beige;
   padding: 10px;
-}
-
-.note-list {
-  list-style-type: none;
 }
